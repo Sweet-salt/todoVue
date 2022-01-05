@@ -19,7 +19,10 @@
                 </div>
                 <ul class="list">
                     <li v-for="(todo, i) in todos" :key="i">
-                        <i  :class="[ todo.state === 'yet'? 'far' : 'fas', 'fa-check-square']"></i>
+                        <i  
+                        :class="[ todo.state === 'yet'? 'far' : 'fas', 'fa-check-square']"
+                        @click="checkItem(i)"
+                        ></i>
                         <span > {{ todo.text }}
                             <b>
                                 <a href="#">Edit</a>
@@ -61,6 +64,15 @@ export default {
             this.todos.push({text: this.addItemText, state: 'yet'});
             this.addItemText = '';
             this.$ref.cursorFocus.focus();
+        },
+        checkItem(i) {
+            if(this.todos[i].state === 'yet') {
+                this.todos[i].state = 'done'
+                
+            }else{
+                this.todos[i].state = 'yet'
+            }
+            
         }
     },
     
