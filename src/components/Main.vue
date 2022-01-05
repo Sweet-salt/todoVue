@@ -5,19 +5,35 @@
         </header>
         <main>
             <div class="todos">
-                <div class="write">
-                    <input type="text" 
-                    v-model="addItemText" 
-                    @keyup.enter="addItem" 
-                    ref="cursorFocus"
-                    autofocus/>
-                    <button 
-                    @click="addItem"
-                    class="btn add">
-                        Add
-                    </button>
-                </div>
-                <ul class="list">
+                <transition name="fade">
+                    <!-- Add Mode -->
+                    <div class="write" v-if="writeState === 'add'">
+                        <input type="text" 
+                        v-model="addItemText" 
+                        @keyup.enter="addItem" 
+                        ref="cursorFocus"
+                        autofocus/>
+                        <button 
+                        @click="addItem"
+                        class="btn add">
+                            Add
+                        </button>
+                    </div>
+                    <!-- edit Mode -->
+                    <div class="write" v-else>
+                        <input type="text" 
+                        v-model="todos[crrEditItem].text" 
+                        @keyup.enter="editSave" 
+                        ref="cursorFocus"
+                        autofocus/>
+                        <button 
+                        @click="editSave"
+                        class="btn add">
+                            Save
+                        </button>
+                    </div>
+                </transition>
+                <ul :class="[writeState, 'list']" >
                     <li v-for="(todo, i) in todos" :key="i">
                         <i  
                         :class="[ todo.state === 'yet'? 'far' : 'fas', 'fa-check-square']"
@@ -25,8 +41,8 @@
                         ></i>
                         <span > {{ todo.text }}
                             <b>
-                                <a href="#">Edit</a>
-                                <a href="#">Del</a>
+                                <a href="#" @click.prevent="editShow(i)">Edit</a>
+                                <a href="#" @click.prevent="deleteItem(i)">Del</a>
                             </b>
                         </span>
                     </li>
@@ -38,24 +54,15 @@
 </template>
 
 <script>
+import {db} from '../firebase/db';
 export default {
     data() {
         return {
-            todos: [
-                {
-                    text: '공부하기',
-                    state: 'yet'
-                },
-                {
-                    text: '운동',
-                    state: 'done'
-                },
-                {
-                    text: 'watch',
-                    state: 'done'
-                }
-            ],
-            addItemText: ''
+            todos: [],
+            addItemText: '',
+            writeState: 'add',
+            crrEditItem: '',
+            
         }
     },
     methods: {
@@ -68,13 +75,28 @@ export default {
         checkItem(i) {
             if(this.todos[i].state === 'yet') {
                 this.todos[i].state = 'done'
-                
             }else{
                 this.todos[i].state = 'yet'
             }
-            
+        },
+        editSave() {
+            this.writeState = 'add';
+           
+        },
+        editShow(index) {
+            this.crrEditItem = index;
+            this.writeState = 'edit';
+            this.$ref.list.className = "edit";
+        },
+        deleteItem(index){
+            this.todos.splice(index, 1);
         }
     },
-    
+    mount() {
+
+    },
+    firestore: {
+        todos: db.collection('TodoList')
+    }
 }
 </script>
