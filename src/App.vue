@@ -1,89 +1,17 @@
 <template>
-  <div id="app">
-    <Main></Main>
-  </div>
+  <Header />
+  <RouterView />
+  <Footer />
 </template>
 
 <script>
-import Main from './components/Main.vue'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 
 export default {
-  name: 'App',
   components: {
-    Main
+    Header,
+    Footer
   }
 }
 </script>
-
-<style>
-@charset 'utf-8';
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Noto+Sans+KR:wght@100;400&display=swap');
-
-/* reset */
-* {margin:0; padding:0}
-html {font-size:16px}
-body {font-family: 'Noto Sans KR', sans-serif;}
-li {list-style:none;}
-a {text-decoration-line: none; color:black}
-input, button, a {outline: none;}
-
-/* common */
-.fas, .far {cursor: pointer; margin-right:10px; font-size:1.5rem; vertical-align:-2px; color:#2CA661}
-.far {color:#abe0c2}
-.btn {border: 1px solid #d9d9d9; line-height: 1.5; padding: 0.5em 1em; border-radius: 1.5em; background-color:white; color:#999; cursor: pointer; margin-right:4px}
-.btn.point {background-color: #2CA661; border:none; color:white}
-
-/* header */
-h1 {font-family: 'Merriweather', serif;}
-
-/* page */
-.page {max-width: 1000; margin:40px auto; width:80%}
-.todos {font-size:1.2rem; margin:20px 0 0; position: relative;}
-.todos .write {
-  display:inline-block; 
-  background-color:#f3f2eb; 
-  padding:10px 15px; 
-  border-radius:34px;
-  margin-left:-20px;
-  position: absolute;
-  box-sizing: border-box;
-  z-index: 100;
-  }
-.todos .write.edit{
-  border: 4px solid #2CA661;
-}
-.todos .write > input {
-    font-size:24px;
-    border:none; 
-    padding:5px 10px; 
-    background-color: transparent;
-    vertical-align: middle;
-}
-.todos .write > button {margin-right:-2px; vertical-align: middle;}
-.todos ul {padding-top: 70px;}
-.todos ul.edit::after {
-  content:'';
-  position: absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background-color: rgba(255,255,255, 0.5)
-}
-
-.todos ul > li {margin:10px 0}
-.todos ul > li > span {padding-right:60px; position: relative;}
-.todos ul > li > span:hover b {visibility: visible; opacity:1;}
-.todos ul > li > span b {margin-left: 20px; font-size:10px; position: absolute; bottom:5px; right:0; visibility: hidden; opacity:0;}
-.todos ul > li > span b > a {margin:0 4px; color:#877457; text-decoration:underline;}
-
-/* animation */
-.fade-enter-active, .fade-leave-active{
-  transition: opacity .5s;
-}
-
-.fade-enter, .fade-leave-to{
-  opacity: 0;
-}
-</style>
-
