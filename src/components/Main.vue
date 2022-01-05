@@ -6,8 +6,16 @@
         <main>
             <div class="todos">
                 <div class="write">
-                    <input type="text" />
-                    <button class="btn add">Add</button>
+                    <input type="text" 
+                    v-model="addItemText" 
+                    @keyup.enter="addItem" 
+                    ref="cursorFocus"
+                    autofocus/>
+                    <button 
+                    @click="addItem"
+                    class="btn add">
+                        Add
+                    </button>
                 </div>
                 <ul class="list">
                     <li v-for="(todo, i) in todos" :key="i">
@@ -43,8 +51,18 @@ export default {
                     text: 'watch',
                     state: 'done'
                 }
-            ]
+            ],
+            addItemText: ''
         }
-    }
+    },
+    methods: {
+        addItem() {
+            if(this.addItemText === '') return;
+            this.todos.push({text: this.addItemText, state: 'yet'});
+            this.addItemText = '';
+            this.$ref.cursorFocus.focus();
+        }
+    },
+    
 }
 </script>
